@@ -1,4 +1,7 @@
+from Tkinter import *
+import Tkinter, Tkconstants, tkFileDialog
 import Tkinter as tkinter
+import ttk as ttk
 import cv2
 import PIL.Image, PIL.ImageTk
 import time
@@ -10,8 +13,13 @@ class App:
 		self.video_source1 = video_source1
 		self.video_source2 = video_source2
 
+
+		self.m1 = PanedWindow(window, orient=HORIZONTAL)
+		self.m1.pack(fill=BOTH, expand=0)
+
  
 		# open video sources (by default this will try to open the computer webcam)
+		self.filename = tkFileDialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("jpeg files","*.jpg"),("all files","*.*")))		
 		self.vid1 = MyVideoCapture(self.video_source1)
 		self.vid2 = MyVideoCapture(self.video_source2)
 
@@ -19,9 +27,18 @@ class App:
 		# Create a canvas that can fit the above video source size
 		self.canvas1 = tkinter.Canvas(window, width = self.vid1.width, height = self.vid1.height)
 		self.canvas1.pack(side="left", fill="both", expand= True)
+		self.canvas1.configure(bg="white")
+		self.m1.add(self.canvas1)
+
+		self.openFile1 = Button(text="Open first video", command=callback_openFirstFile)
+		self.m1.add(self.openFile1)
+
 
 		self.canvas2 = tkinter.Canvas(window, width = self.vid2.width, height = self.vid2.height)
-		self.canvas2.pack(side="right", fill="both", expand= False)
+		self.canvas2.pack(side="left", fill="both", expand= False)
+		self.canvas2.configure(bg="white")
+		self.m1.add(self.canvas2)
+
  
  		# Calculate maximal hight
  		self.maxHeight = self.vid1.height if (self.vid1.height > self.vid2.height) else self.vid2.height
@@ -45,6 +62,8 @@ class App:
 			cv2.imwrite("frame-" + time.strftime("%d-%m-%Y-%H-%M-%S") + ".jpg", cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
  
 	def update(self):
+
+		self.window.geometry('{}x{}'.format(int(self.vid1.width+self.vid2.width), int(self.maxHeight)))
 		# Get a frame from the video source
 		ret1, frame1 = self.vid1.get_frame()
 		ret2, frame2 = self.vid2.get_frame()
