@@ -28,7 +28,11 @@ class App:
 		# Button for opening File on left & right side
 		self.button_left = Button(text="Open first video", command=self.callback_openFirstFile)
 		self.button_right = Button(text="Open second video", command=self.callback_openSecondFile)
+		self.button_right_webcam = Button(text="Use Webcam", command=self.callback_useWebcam)
 
+
+		#Buttons vor Video maneuvering
+		self.button_l_play = Button(text="Play", command=self.callback_l_play)
 
 		# Create a canvas that can fit the above video source size
 		self.canvas1 = tkinter.Canvas(window, width = 400, height = 400)
@@ -36,6 +40,7 @@ class App:
 		self.canvas1.configure(bg="white")
 		self.m1.add(self.canvas1)
 		self.m1.add(self.button_left)
+		self.m1.add(self.button_l_play)
 
 
 		self.canvas2 = tkinter.Canvas(window, width = 400, height = 400)
@@ -43,6 +48,7 @@ class App:
 		self.canvas2.configure(bg="white")
 		self.m1.add(self.canvas2)
 		self.m1.add(self.button_right)
+		self.m1.add(self.button_right_webcam)
 
  
  		# Calculate maximal hight
@@ -66,16 +72,23 @@ class App:
 		if ret:
 			cv2.imwrite("frame-" + time.strftime("%d-%m-%Y-%H-%M-%S") + ".jpg", cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
  
+
+
+
+
 	def update(self):
 
 		#self.window.geometry('{}x{}'.format(int(self.vid1.width+self.vid2.width), int(self.maxHeight)))
-		# Get a frame from the video source
+		# Get a frame from the video source, calling method get_frame from MyVideoCapture class
 		if self.vid1 != None:
 			ret1, frame1 = self.vid1.get_frame()
 
+			#if the flag ret1 shows that video 1 exists
 			if ret1:
 				self.photo1 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame1))
 				self.canvas1.create_image(0, 0, image = self.photo1, anchor = tkinter.NW)
+
+		
  
  		if self.vid2 != None:
  			ret2, frame2 = self.vid2.get_frame()
@@ -90,8 +103,15 @@ class App:
 				#self.canvas1.create_image(0, 0, image = self.photo1, anchor = tkinter.NW)
 				#self.canvas2.create_image(0, 0, image = self.photo2, anchor = tkinter.NW)
 
+
+
  
 		self.window.after(self.delay, self.update)
+
+
+
+
+
 
 
 	def callback_openFirstFile(self):
@@ -101,7 +121,17 @@ class App:
  	def callback_openSecondFile(self):
 		self.video_source2 = tkFileDialog.askopenfilename(title = "Select file", filetypes = (("all files","*.*"),("avi files","*.avi"), ("mp4 files","*.mp4"),("webm files","*.webm")))		
 		self.vid2 = MyVideoCapture(self.video_source2)
+
+	def callback_useWebcam(self):
+		self.vid2 = MyVideoCapture(0)
  
+ 	def callback_l_play(self):
+ 		print('f')
+
+
+
+
+
 class MyVideoCapture:
 	def __init__(self, video_source=0):
 		# Open the video source
@@ -128,6 +158,7 @@ class MyVideoCapture:
 	def __del__(self):
 		if self.vid.isOpened():
 			self.vid.release()
+
  
 # Create a window and pass it to the Application object
 App(tkinter.Tk(), "Video Analyser/Comparer", 0, 'a1QnG8Y_460svvp9.webm')
