@@ -12,6 +12,9 @@ class App:
 		self.window.title(window_title)
 		self.video_source1 = video_source1
 		self.video_source2 = video_source2
+		self.l_play = 0
+		self.r_play = 0
+
 
 
 		self.m1 = PanedWindow(window, orient=HORIZONTAL)
@@ -30,9 +33,10 @@ class App:
 		self.button_right = Button(text="Open second video", command=self.callback_openSecondFile)
 		self.button_right_webcam = Button(text="Use Webcam", command=self.callback_useWebcam)
 
-
 		#Buttons vor Video maneuvering
 		self.button_l_play = Button(text="Play", command=self.callback_l_play)
+		self.button_r_play = Button(text="Play", command=self.callback_r_play)
+
 
 		# Create a canvas that can fit the above video source size
 		self.canvas1 = tkinter.Canvas(window, width = 400, height = 400)
@@ -49,6 +53,8 @@ class App:
 		self.m1.add(self.canvas2)
 		self.m1.add(self.button_right)
 		self.m1.add(self.button_right_webcam)
+		self.m1.add(self.button_r_play)
+
 
  
  		# Calculate maximal hight
@@ -81,27 +87,28 @@ class App:
 		#self.window.geometry('{}x{}'.format(int(self.vid1.width+self.vid2.width), int(self.maxHeight)))
 		# Get a frame from the video source, calling method get_frame from MyVideoCapture class
 		if self.vid1 != None:
-			ret1, frame1 = self.vid1.get_frame()
+			if self.l_play:
+				ret1, frame1 = self.vid1.get_frame()
 
-			#if the flag ret1 shows that video 1 exists
-			if ret1:
-				self.photo1 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame1))
-				self.canvas1.create_image(0, 0, image = self.photo1, anchor = tkinter.NW)
-
+				#if the flag ret1 shows that video 1 exists
+				if ret1:
+					self.photo1 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame1))
+					self.canvas1.create_image(0, 0, image = self.photo1, anchor = tkinter.NW)
 		
  
  		if self.vid2 != None:
- 			ret2, frame2 = self.vid2.get_frame()
+ 			if self.r_play:
+ 				ret2, frame2 = self.vid2.get_frame()
 
-			if ret2:
-				self.photo2 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame2))
-				self.canvas2.create_image(0, 0, image = self.photo2, anchor = tkinter.NW)
+				if ret2:
+					self.photo2 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame2))
+					self.canvas2.create_image(0, 0, image = self.photo2, anchor = tkinter.NW)
 
-			#if ret1 & ret2:
-				#self.photo1 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame1))
-				#self.photo2 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame2))
-				#self.canvas1.create_image(0, 0, image = self.photo1, anchor = tkinter.NW)
-				#self.canvas2.create_image(0, 0, image = self.photo2, anchor = tkinter.NW)
+				#if ret1 & ret2:
+					#self.photo1 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame1))
+					#self.photo2 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame2))
+					#self.canvas1.create_image(0, 0, image = self.photo1, anchor = tkinter.NW)
+					#self.canvas2.create_image(0, 0, image = self.photo2, anchor = tkinter.NW)
 
 
 
@@ -126,8 +133,16 @@ class App:
 		self.vid2 = MyVideoCapture(0)
  
  	def callback_l_play(self):
- 		print('f')
+ 		if self.l_play == 0:
+ 			self.l_play = 1
+ 		else:
+ 			self.l_play = 0	
 
+ 	def callback_r_play(self):
+ 		if self.r_play == 0:
+ 			self.r_play = 1
+ 		else:
+ 			self.r_play = 0	
 
 
 
