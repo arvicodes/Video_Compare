@@ -1,7 +1,8 @@
-from Tkinter import *
-import Tkinter, Tkconstants, tkFileDialog
-import Tkinter as tkinter
-import ttk as ttk
+from tkinter import *
+from tkinter import ttk
+from tkinter.ttk import *
+from tkinter import filedialog
+import tkinter as tkinter
 import cv2
 import PIL.Image, PIL.ImageTk
 import time
@@ -10,12 +11,7 @@ import time
  #start gui designer with: ~/.local/bin/pygubu-designer
 class App:
 	def __init__(self):
-		_bgcolor = '#d9d9d9'  # X11 color: 'gray85'
-		_fgcolor = '#000000'  # X11 color: 'black'
-		_compcolor = '#d9d9d9' # X11 color: 'gray85'
-		_ana1color = '#d9d9d9' # X11 color: 'gray85'
-		_ana2color = '#ececec' # Closest X11 color: 'gray92'
-
+		
 		self.l_play = 0
 		self.r_play = 0
 		self.firstTime1 = True
@@ -26,61 +22,51 @@ class App:
 		
 		# -----------GUI---------------------------------------------------------------------
 
-		#self.style = ttk.Style()
-		#self.style.theme_use('calm')
-		#self.style.configure('.',background=_bgcolor)
-		#self.style.configure('.',foreground=_fgcolor)
-		#self.style.configure('.',font="TkDefaultFont")
-		#self.style.map('.',background=
-		#	[('selected', _compcolor), ('active',_ana2color)])
-
 		self.top = tkinter.Tk()
 
-		self.top.geometry("760x511+541+155")
-		self.top.title("New Toplevel")
-		self.top.configure(background="#d8d8d8")
+		self.screen_width = self.top.winfo_screenwidth()
+		self.screen_height = self.top.winfo_screenheight()
+
+		self.top.geometry('%ix%i' % (self.screen_width,self.screen_height)) #760x511+541+155
+		self.top.title("Video Compare")
+		self.top.configure(background="#ffffff")
 
 		self.Canvas1 = tkinter.Canvas(self.top)
-		self.Canvas1.place(relx=0.013, rely=0.078, relheight=0.667
-				, relwidth=0.488)
+		self.Canvas1.place(relx=0.001, rely=0.01, relheight=0.75
+				, relwidth=0.5)
 		self.Canvas1.configure(borderwidth="2")
 		self.Canvas1.configure(relief="ridge")
 		self.Canvas1.configure(selectbackground="#c4c4c4")
 		self.Canvas1.configure(width=371)
 
-		self.Button4 = tkinter.Button(self.Canvas1)
+		self.Button4 = ttk.Button(self.Canvas1)
 		self.Button4.place(relx=0.647, rely=0.029, height=33, width=117)
 		self.Button4.configure(text='''Load Video''', command=lambda: self.callback_openDialog(1))
 
 		self.Canvas2 = tkinter.Canvas(self.top)
-		self.Canvas2.place(relx=0.513, rely=0.078, relheight=0.667
-				, relwidth=0.475)
+		self.Canvas2.place(relx=0.496, rely=0.01, relheight=0.75
+				, relwidth=0.503)
 		self.Canvas2.configure(borderwidth="2")
 		self.Canvas2.configure(relief="ridge")
 		self.Canvas2.configure(selectbackground="#c4c4c4")
-		self.Canvas2.configure(width=361)
+		self.Canvas2.configure(width=371)
 
-		self.Button5 = tkinter.Button(self.Canvas2)
-		self.Button5.place(relx=0.637, rely=0.029, height=33, width=117)
+		self.Button5 = ttk.Button(self.Canvas2)
+		self.Button5.place(relx=0.65, rely=0.029, height=33, width=117)
 		self.Button5.configure(text='''Load Video''', command=lambda: self.callback_openDialog(2))
 
-		self.Button1 = tkinter.Button(self.top)
+		self.Button1 = ttk.Button(self.top)
 		self.Button1.place(relx=0.171, rely=0.763, height=33, width=61)
 		self.Button1.configure(text='''Play''', command=self.callback_l_play)
 
-		self.Button2 = tkinter.Button(self.top)
+		self.Button2 = ttk.Button(self.top)
 		self.Button2.place(relx=0.711, rely=0.763, height=33, width=61)
 		self.Button2.configure(text='''Play''', command=self.callback_r_play)
 		self.Button2.configure(width=61)
 
-		self.Button3 = tkinter.Button(self.top)
-		self.Button3.place(relx=0.013, rely=0.92, height=33, width=741)
+		self.Button3 = ttk.Button(self.top)
+		self.Button3.place(relx=0.013, rely=0.92, height=33, width=self.screen_width - 50)
 		self.Button3.configure(text='''Play both''', command=self.callback_both_play)
-		self.Button3.configure(width=741)
-
-		self.TSeparator1 = ttk.Separator(self.top)
-		self.TSeparator1.place(relx=0.507, rely=0.039, relheight=0.841)
-		self.TSeparator1.configure(orient="vertical")
 
 		#-------------------------------------------------------------------------------------
 
@@ -92,6 +78,7 @@ class App:
 
 
 	def update(self):
+
 
 
 		#self.window.geometry('{}x{}'.format(int(self.vid1.width+self.vid2.width), int(self.maxHeight)))
@@ -107,8 +94,7 @@ class App:
 				if ret1:
 					self.photo1 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame1))
 					self.Canvas1.create_image(0, 0, image = self.photo1, anchor = tkinter.NW)
-		
-				
+					
 		if self.vid2 != None:
 			if self.r_play | self.firstTime2:
 
@@ -118,13 +104,6 @@ class App:
 				if ret2:
 					self.photo2 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame2))
 					self.Canvas2.create_image(0, 0, image = self.photo2, anchor = tkinter.NW)
-
-				#if ret1 & ret2:
-					#self.photo1 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame1))
-					#self.photo2 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame2))
-					#self.canvas1.create_image(0, 0, image = self.photo1, anchor = tkinter.NW)
-					#self.canvas2.create_image(0, 0, image = self.photo2, anchor = tkinter.NW)
-
 
 		# needed to run update constantly
 		self.top.after(self.delay, self.update)
@@ -138,13 +117,13 @@ class App:
 	def callback_openVideoFromFile(self, videoNumber):
 		# left video
 		if videoNumber == 1:
-			self.video_source1 = tkFileDialog.askopenfilename(title = "Select file", filetypes = (("all files","*.*"),("avi files","*.avi"), ("mp4 files","*.mp4"),("webm files","*.webm")))		
+			self.video_source1 = filedialog.askopenfilename(title = "Select file", filetypes = (("all files","*.*"),("avi files","*.avi"), ("mp4 files","*.mp4"),("webm files","*.webm")))		
 			self.vid1 = MyVideoCapture(self.video_source1)
 			self.firstTime1 = True
 
 		# right video
 		elif videoNumber == 2:
-			self.video_source2 = tkFileDialog.askopenfilename(title = "Select file", filetypes = (("all files","*.*"),("avi files","*.avi"), ("mp4 files","*.mp4"),("webm files","*.webm")))		
+			self.video_source2 = filedialog.askopenfilename(title = "Select file", filetypes = (("all files","*.*"),("avi files","*.avi"), ("mp4 files","*.mp4"),("webm files","*.webm")))		
 			self.vid2 = MyVideoCapture(self.video_source2)
 			self.firstTime2 = True
 
@@ -160,7 +139,7 @@ class App:
 			self.vid2 = MyVideoCapture(0)
 			self.firstTime2 = True
 
- 		self.dialog.destroy()
+		self.dialog.destroy()
 
 	
 	# Function ist called by the 'Load Video' Button and offers a GUI to choose the Source of the Video to load, for example a File, from the Webcam or from an external camera source
@@ -171,7 +150,7 @@ class App:
 		self.dialog.title("Select Video Source Dialog")
 
 		self.Dia_Label = tkinter.Label(self.dialog)
-		self.Dia_Label.place(relx=0.264, rely=0.099, height=48, width=126)
+		self.Dia_Label.place(relx=0.164, rely=0.099, height=48, width=150)
 		self.Dia_Label.configure(text='''Select video source:''')
 		self.Dia_Label.configure(width=126)
 
