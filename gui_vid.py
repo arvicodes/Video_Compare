@@ -18,22 +18,23 @@ class App:
 
 		self.l_play = 0
 		self.r_play = 0
-
+		self.firstTime1 = True
+		self.firstTime2 = True
 	
 		self.vid1 = None
 		self.vid2 = None
 		
 		# -----------GUI---------------------------------------------------------------------
 
-		self.style = ttk.Style()
+		#self.style = ttk.Style()
 		#self.style.theme_use('calm')
-		self.style.configure('.',background=_bgcolor)
-		self.style.configure('.',foreground=_fgcolor)
-		self.style.configure('.',font="TkDefaultFont")
-		self.style.map('.',background=
-			[('selected', _compcolor), ('active',_ana2color)])
+		#self.style.configure('.',background=_bgcolor)
+		#self.style.configure('.',foreground=_fgcolor)
+		#self.style.configure('.',font="TkDefaultFont")
+		#self.style.map('.',background=
+		#	[('selected', _compcolor), ('active',_ana2color)])
 
-		self.top = tkinter.Toplevel()
+		self.top = tkinter.Tk()
 
 		self.top.geometry("760x511+541+155")
 		self.top.title("New Toplevel")
@@ -49,7 +50,7 @@ class App:
 
 		self.Button4 = tkinter.Button(self.Canvas1)
 		self.Button4.place(relx=0.647, rely=0.029, height=33, width=117)
-		self.Button4.configure(text='''Load Video''', command=self.callback_openFirstFile)
+		self.Button4.configure(text='''Load Video''', command=lambda: self.callback_openDialog(1))
 
 		self.Canvas2 = tkinter.Canvas(self.top)
 		self.Canvas2.place(relx=0.513, rely=0.078, relheight=0.667
@@ -61,7 +62,7 @@ class App:
 
 		self.Button5 = tkinter.Button(self.Canvas2)
 		self.Button5.place(relx=0.637, rely=0.029, height=33, width=117)
-		self.Button5.configure(text='''Load Video''', command=self.callback_openSecondFile)
+		self.Button5.configure(text='''Load Video''', command=lambda: self.callback_openDialog(2))
 
 		self.Button1 = tkinter.Button(self.top)
 		self.Button1.place(relx=0.171, rely=0.763, height=33, width=61)
@@ -95,8 +96,11 @@ class App:
 
 		#self.window.geometry('{}x{}'.format(int(self.vid1.width+self.vid2.width), int(self.maxHeight)))
 		# Get a frame from the video source, calling method get_frame from MyVideoCapture class
+
 		if self.vid1 != None:
-			if self.l_play:
+			if self.l_play | self.firstTime1:
+
+				self.firstTime1 = False
 				ret1, frame1 = self.vid1.get_frame()
 
 				#if the flag ret1 shows that video 1 exists
@@ -104,9 +108,11 @@ class App:
 					self.photo1 = PIL.ImageTk.PhotoImage(image = PIL.Image.fromarray(frame1))
 					self.Canvas1.create_image(0, 0, image = self.photo1, anchor = tkinter.NW)
 		
- 				
+				
 		if self.vid2 != None:
-			if self.r_play:
+			if self.r_play | self.firstTime2:
+
+				self.firstTime2 = False
 				ret2, frame2 = self.vid2.get_frame()
 
 				if ret2:
@@ -120,8 +126,7 @@ class App:
 					#self.canvas2.create_image(0, 0, image = self.photo2, anchor = tkinter.NW)
 
 
-
- 		# needed to run update constantly
+		# needed to run update constantly
 		self.top.after(self.delay, self.update)
 
 
@@ -129,18 +134,64 @@ class App:
 
 
 
+	# Opening Video 1 or Video 2 from a File after selecting 'Open From File' in the Dialog field
+	def callback_openVideoFromFile(self, videoNumber):
+		# left video
+		if videoNumber == 1:
+			self.video_source1 = tkFileDialog.askopenfilename(title = "Select file", filetypes = (("all files","*.*"),("avi files","*.avi"), ("mp4 files","*.mp4"),("webm files","*.webm")))		
+			self.vid1 = MyVideoCapture(self.video_source1)
+			self.firstTime1 = True
 
-	def callback_openFirstFile(self):
-		self.video_source1 = tkFileDialog.askopenfilename(title = "Select file", filetypes = (("all files","*.*"),("avi files","*.avi"), ("mp4 files","*.mp4"),("webm files","*.webm")))		
-		self.vid1 = MyVideoCapture(self.video_source1)
+		# right video
+		elif videoNumber == 2:
+			self.video_source2 = tkFileDialog.askopenfilename(title = "Select file", filetypes = (("all files","*.*"),("avi files","*.avi"), ("mp4 files","*.mp4"),("webm files","*.webm")))		
+			self.vid2 = MyVideoCapture(self.video_source2)
+			self.firstTime2 = True
 
-	def callback_openSecondFile(self):
-		self.video_source2 = tkFileDialog.askopenfilename(title = "Select file", filetypes = (("all files","*.*"),("avi files","*.avi"), ("mp4 files","*.mp4"),("webm files","*.webm")))		
-		self.vid2 = MyVideoCapture(self.video_source2)
+		self.dialog.destroy()
+		
 
-	def callback_useWebcam(self):
-		self.vid2 = MyVideoCapture(0)
- 
+	def callback_useWebcam(self, videoNumber):
+		if videoNumber == 1:
+			self.vid1 = MyVideoCapture(0)
+			self.firstTime1 = True
+
+		elif videoNumber == 2:
+			self.vid2 = MyVideoCapture(0)
+			self.firstTime2 = True
+
+ 		self.dialog.destroy()
+
+	
+	# Function ist called by the 'Load Video' Button and offers a GUI to choose the Source of the Video to load, for example a File, from the Webcam or from an external camera source
+	def callback_openDialog(self, videoNumber):
+		self.dialog = tkinter.Tk()
+
+		self.dialog.geometry("227x202+667+252")
+		self.dialog.title("Select Video Source Dialog")
+
+		self.Dia_Label = tkinter.Label(self.dialog)
+		self.Dia_Label.place(relx=0.264, rely=0.099, height=48, width=126)
+		self.Dia_Label.configure(text='''Select video source:''')
+		self.Dia_Label.configure(width=126)
+
+		self.Dia_Button1 = tkinter.Button(self.dialog)
+		self.Dia_Button1.place(relx=0.264, rely=0.347, height=28, width=116)
+		self.Dia_Button1.configure(text='''Open from File''', command=lambda: self.callback_openVideoFromFile(videoNumber))
+
+		self.Dia_Button2 = tkinter.Button(self.dialog)
+		self.Dia_Button2.place(relx=0.176, rely=0.545, height=28, width=149)
+		self.Dia_Button2.configure(text='''Open from Webcam''', command=lambda: self.callback_useWebcam(videoNumber))
+
+		self.Dia_Button3 = tkinter.Button(self.dialog)
+		self.Dia_Button3.place(relx=0.088, rely=0.743, height=28, width=191)
+		self.Dia_Button3.configure(text='''Open from external Source''')
+
+
+		self.dialog.mainloop()
+
+
+	# Called by the left Play Button
 	def callback_l_play(self):
 		if self.l_play == 0:
 			self.l_play = 1
@@ -150,6 +201,7 @@ class App:
 			self.l_play = 0	
 
 
+	# Called by the right Play Button
 	def callback_r_play(self):
 		if self.r_play == 0:
 			self.r_play = 1
@@ -159,15 +211,22 @@ class App:
 			self.Button2.configure(text='''Play''')
 
 
+	# Called by the Play Both Button
 	def callback_both_play(self):
 		if self.l_play == 0 | self.r_play == 0:
 			self.l_play = 1
 			self.r_play = 1
 			self.Button3.configure(text='''Pause both''')
+			self.Button1.configure(text='''Pause''')
+			self.Button2.configure(text='''Pause''')
 		else:
 			self.l_play = 0		
 			self.r_play = 0	
 			self.Button3.configure(text='''Play both''')
+			self.Button1.configure(text='''Play''')
+			self.Button2.configure(text='''Play''')
+
+
 
 
 class MyVideoCapture:
@@ -197,6 +256,7 @@ class MyVideoCapture:
 		if self.vid.isOpened():
 			self.vid.release()
 
- 
+
+
 # Create a window and pass it to the Application object
 App()
