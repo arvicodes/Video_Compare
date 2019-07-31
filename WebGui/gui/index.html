@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
+    
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <script src="linkers/video.js"></script>
+
   </head>
   <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+    
+
+
+    <div class="alert alert-success">Please select two videos to compare</div>
+
+    <button type="button" class="btn btn-primary" id="video_one_load_button" onclick="get_video()">Load First Video</button>
 
     <!-- You can also require other files to run in this process -->
     <script src="./renderer.js"></script>

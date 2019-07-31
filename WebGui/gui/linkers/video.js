@@ -3,10 +3,12 @@
 
     console.log("Js file loaded sucsessfully");
 
-    //document.getElementById("vid2button").style.color = "red";
+    //document.getElementById("video_one_load_button").style.color = "red";
 
     const {PythonShell} = require("python-shell");
-	var path = require('path');
+    //import {PythonShell} from 'python-shell';
+    //let {PythonShell} = require('python-shell')
+    var path = require('path');
 
 	var video = new PythonShell('../../engine/video.py');
 
