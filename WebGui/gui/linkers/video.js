@@ -1,16 +1,19 @@
 
-//function get_video() {
+function get_video() {
 
     console.log("Js file loaded sucsessfully");
+    document.getElementById("video_one_load_button").style.color = "red";
 
-    //document.getElementById("video_one_load_button").style.color = "red";
-
-    const {PythonShell} = require("python-shell");
+   const {PythonShell} = require("python-shell");
     //import {PythonShell} from 'python-shell';
     //let {PythonShell} = require('python-shell')
     var path = require('path');
 
-	var video = new PythonShell('../../engine/video.py');
+    var options= {
+        scriptPath : path.join(__dirname, '/../../engine/')
+    }
+
+	var video = new PythonShell('video.py', options);
 
 	video.on('message', function (message) {
         // received a message sent from the Python script (a simple "print" statement)
@@ -23,7 +26,7 @@
             throw err;
         };
 
-        console.log('finished');
+        console.log('Js finished');
     });
 
-//}
+}
