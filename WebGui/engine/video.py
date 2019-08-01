@@ -1,7 +1,7 @@
 import multiprocessing
 import numpy as np
 import cv2
-
+from PIL import Image
 
 
 e = multiprocessing.Event()
@@ -62,19 +62,24 @@ if __name__ == "__main__":
     print("Python file loaded successfully")
 
     # open Video, error message if not successfull
-    vid = cv2.VideoCapture(0)   #"../../engine/a1QnG8Y_460svvp9.webm"   #"a1QnG8Y_460svvp9.webm"
-
+    # npm is started from gui folder, we go to WebGui -> VideoCompare and there the video is located, 
+    vid = cv2.VideoCapture("../../a1QnG8Y_460svvp9.webm")   #"../../engine/a1QnG8Y_460svvp9.webm"   #"a1QnG8Y_460svvp9.webm"
     
     while (vid.isOpened()):
         #read returns one boolean flag if reading was sucessfull and one frame of the video material, meaning one picture
         ret, frame = vid.read()
         if ret:
+            #mirroring of the current frame
             frame = cv2.flip(frame, 1)
             #let's convert the current frame to BGR color
             cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
         
             # Display the resulting frame
             cv2.imshow('frame', cv2image)
+
+            #img = Image.fromarray(cv2image) # not necessary, maybe later
+            #imgtk = ImageTk.PhotoImage(image=img)
+            #videoLabel.imgtk = imgtk
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
