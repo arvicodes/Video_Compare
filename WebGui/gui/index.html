@@ -39,6 +39,7 @@
         margin: 30px;
         z-index: -1;
       }
+
     </style>
 
   </head>
@@ -51,7 +52,7 @@
         <button type="button" class="btn btn-primary" id="video_one_load_button" onclick="get_video_js_only(0)">Load First Video</button>
 
         <!--<video id="video" width="320" height="240" controls="true" />-->
-        <video id="video1"  controls  muted  class="cld-video-player cld-fluid"></video>
+        <video id="video1" played loop controls  muted  class="cld-video-player cld-fluid" preload="metadata"></video>
 
       </div>
 
@@ -63,14 +64,31 @@
         <button type="button" class="btn btn-primary" id="video_two_load_button" onclick="get_video_js_only(1)">Load Second Video</button>
 
         <!--<video id="video" width="320" height="240" controls="true" />-->
-        <video id="video2"  controls  muted  class="cld-video-player cld-fluid"></video>
+        <video id="video2" played loop controls  muted  class="cld-video-player cld-fluid" preload="metadata"></video>
 
+        <br />
+        <div class="input-group" style="width:25%;">
+            <input type="text" id="v2_start" class="form-control input-sm" style=";">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-info btn-sm" onclick="define_start()">Define Start</button>
+            </span>
+        </div>    
+        <div class="input-group" style="width:25%;">
+            <input type="text" id="v2_end" class="form-control input-sm" >
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-info btn-sm" onclick="define_end()">Define End</button>
+            </span>
+        </div>
+        
+        
+       
+       
       </div>
 
 
       <div class="col-12">
 
-        <button type="button" class="btn btn-primary" id="play_both" onclick="play_both_videos(0)">Pause Both Videos</button>
+        <button type="button" class="btn btn-primary" id="play_both" onclick="play_pause_both_videos(0)">Play/Pause both Videos</button>
 
       </div>
 

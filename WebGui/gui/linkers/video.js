@@ -1,7 +1,16 @@
-var video1 = document.getElementById('video1');
-var video2 = document.getElementById('video2');
+var video1, video2, seekBar, v1_start_time, v2_start_time, v1_end_time, v2_end_time;
+
+function init() {
+
+    video1 = document.getElementById('video1');
+    video2 = document.getElementById('video2');
+
+}
 
 function get_video_js_only(second) {
+
+    init();
+
     var source = document.createElement('source');
 
     source.setAttribute('src', 'a1QnG8Y_460svvp9.webm');
@@ -17,7 +26,7 @@ function get_video_js_only(second) {
     setTimeout(function() {  
         video.pause();
 
-        source.setAttribute('src', 'a1QnG8Y_460svvp9.webm'); 
+        source.setAttribute('src', 'a1QnG8Y_460svvp9.webm#t=15,20'); 
 
         video.load();
         video.play();
@@ -26,10 +35,57 @@ function get_video_js_only(second) {
 
 
 
-function play_both_videos(){
-    video1.pause();
-    video2.pause();
+function play_pause_both_videos(){
+    if (video1.paused || video2.paused) { 
+        video1.play();
+        video2.play();
+        //document.getElementById("play_both").childNodes[0].nodeValue="Pause Both Videos";
+    }
+    else {
+        video1.pause();
+        video2.pause();
+        //document.getElementById("play_both").childNodes[0].nodeValue="Play Both Videos";
+    }
 }
+
+
+function define_start() {
+
+    var v2_start_input = document.getElementById('v2_start');
+    v2_start_time = v2_start_input;
+    console.log(v2_start_time);
+
+    video2.currentTime = parseFloat(v2_start_time);
+
+}
+
+function define_end() {
+    var v2_end_input = document.getElementById('v2_end');
+    v2_end_time = v2_end_input;
+    console.log(v2_end_time);
+}
+
+
+function loop() {
+    if (video2.currentTime >= v2_end_time) {
+        video2.currentTime = v2_start_time;
+    }
+}
+
+function zoom_in() {
+
+}
+
+function zoom_out() {
+
+}
+
+function open_dialog() {
+
+}
+
+
+
 
 
 
