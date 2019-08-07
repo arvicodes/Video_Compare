@@ -26,7 +26,7 @@ function get_video_js_only(second) {
 
     //add an update, as soon as the video is running loop is called constantly
     video.ontimeupdate = function() {loop(second)};
-
+    console.log(second);
     setTimeout(function() {  
         video.pause();
 
@@ -48,6 +48,21 @@ function get_video_js_only(second) {
         document.getElementById('v1_end').disabled = false;
         v1_end_time = video.duration;
     }
+
+
+    video.controls.innerHTML =  '<button class="play">play</button>'+
+                            '<div id="change">' +
+                            '<button class="zoomin">+</button>' +
+                            '<button class="zoomout">-</button>' +
+                            '<button class="left">⇠</button>' +
+                            '<button class="right">⇢</button>' +
+                            '<button class="up">⇡</button>' +
+                            '<button class="down">⇣</button>' +
+                            '<button class="rotateleft">&#x21bb;</button>' +
+                            '<button class="rotateright">&#x21ba;</button>' +
+                            '<button class="reset">reset</button>' +
+                          '</div>';
+    
 
 
 }
@@ -116,7 +131,7 @@ function define_end(second) {
 
 
 function loop(second) {
-    console.log(parseInt(video1.duration / 60, 10));
+    //console.log(parseInt(video1.duration / 60, 10));
     if (second) {
 
         if (video2.currentTime > v2_end_time) {
