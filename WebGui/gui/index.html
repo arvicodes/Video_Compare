@@ -45,16 +45,30 @@
   </head>
   <body>
     
+
+
     <!-- LEFT -->
     <div class="row">
       <div id="left" class="col-xs-6">
 
         <button type="button" class="btn btn-primary" id="video_one_load_button" onclick="get_video_js_only(0)">Load First Video</button>
 
-        <!--<video id="video" width="320" height="240" controls="true" />-->
         <video id="video1" played loop controls  muted  class="cld-video-player cld-fluid" preload="metadata"></video>
 
+
+        <br />
+        <div class="input-group" style="width:25%;">
+            <input type="text" id="v1_start" class="form-control input-sm" onchange="define_start(0)" placeholder="Define Start" disabled>
+        </div>    
+        <div class="input-group" style="width:25%;">
+            <input type="text" id="v1_end" class="form-control input-sm" onchange="define_end(0)" placeholder="Define End" disabled>
+        </div>
+        
       </div>
+
+
+
+
 
 
 
@@ -63,27 +77,22 @@
 
         <button type="button" class="btn btn-primary" id="video_two_load_button" onclick="get_video_js_only(1)">Load Second Video</button>
 
-        <!--<video id="video" width="320" height="240" controls="true" />-->
         <video id="video2" played loop controls  muted  class="cld-video-player cld-fluid" preload="metadata"></video>
 
         <br />
         <div class="input-group" style="width:25%;">
-            <input type="text" id="v2_start" class="form-control input-sm" style=";">
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-info btn-sm" onclick="define_start()">Define Start</button>
-            </span>
+            <input type="text" id="v2_start" class="form-control input-sm" onchange="define_start(1)" placeholder="Define Start" disabled>
         </div>    
         <div class="input-group" style="width:25%;">
-            <input type="text" id="v2_end" class="form-control input-sm" >
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-info btn-sm" onclick="define_end()">Define End</button>
-            </span>
+            <input type="text" id="v2_end" class="form-control input-sm" onchange="define_end(1)" placeholder="Define End" disabled>
         </div>
-        
-        
-       
        
       </div>
+
+
+
+
+
 
 
       <div class="col-12">
@@ -91,6 +100,9 @@
         <button type="button" class="btn btn-primary" id="play_both" onclick="play_pause_both_videos(0)">Play/Pause both Videos</button>
 
       </div>
+
+
+
 
 
     <!-- You can also require other files to run in this process -->

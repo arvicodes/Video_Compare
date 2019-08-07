@@ -20,8 +20,12 @@ function get_video_js_only(second) {
         video = video2;
     }
 
+
     video.appendChild(source);
-    video.play();
+    //video.play();
+
+    //add an update, as soon as the video is running loop is called constantly
+    video.ontimeupdate = function() {loop(second)};
 
     setTimeout(function() {  
         video.pause();
@@ -31,6 +35,21 @@ function get_video_js_only(second) {
         video.load();
         video.play();
     }, 10000);
+
+
+
+    //enable the input fields for start end end input of the loop after video is loaded now
+    if (second) {
+        document.getElementById('v2_start').disabled = false;
+        document.getElementById('v2_end').disabled = false;
+        v2_end_time = video.duration;
+    } else {
+        document.getElementById('v1_start').disabled = false;
+        document.getElementById('v1_end').disabled = false;
+        v1_end_time = video.duration;
+    }
+
+
 }
 
 
@@ -49,26 +68,65 @@ function play_pause_both_videos(){
 }
 
 
-function define_start() {
+function define_start(second) {
+    if (second) {
+        var v2_start_input = document.getElementById('v2_start').value;
+        v2_start_time = v2_start_input;
 
-    var v2_start_input = document.getElementById('v2_start');
-    v2_start_time = v2_start_input;
-    console.log(v2_start_time);
+        //if user puts starttime that is lower than 0 or higher than endtime
+        if (v2_start_time < 0 || v2_start_time >= v2_end_time) {
+            v2_start_time = 0;
+            document.getElementById('v2_start').value = 0;
+        }
+    } else {
 
-    video2.currentTime = parseFloat(v2_start_time);
+        var v1_start_input = document.getElementById('v1_start').value;
+        v1_start_time = v1_start_input;
 
+        //if user puts starttime that is lower than 0 or higher than endtime
+        if (v1_start_time < 0 || v1_start_time >= v1_end_time) {
+            v1_start_time = 0;
+            document.getElementById('v1_start').value = 0;
+        }
+    }
 }
 
-function define_end() {
-    var v2_end_input = document.getElementById('v2_end');
-    v2_end_time = v2_end_input;
-    console.log(v2_end_time);
+function define_end(second) {
+    if (second) {
+        var v2_end_input = document.getElementById('v2_end').value;
+        v2_end_time = v2_end_input;
+
+        //if user puts endtime that is lower than the start time or higher than the duration
+        if (v2_end_time <= v2_start_time || v2_end_time >= video2.duration) {
+            v2_end_time = video2.duration;
+            document.getElementById('v2_end').value = video2.duration;
+        }
+    } else {
+
+        var v1_end_input = document.getElementById('v1_end').value;
+        v1_end_time = v1_end_input;
+
+        //if user puts endtime that is lower than the start time or higher than the duration
+        if (v1_end_time <= v1_start_time || v1_end_time >= video1.duration) {
+            v1_end_time = video1.duration;
+            document.getElementById('v1_end').value = video1.duration;
+        }
+    }
 }
 
 
-function loop() {
-    if (video2.currentTime >= v2_end_time) {
-        video2.currentTime = v2_start_time;
+function loop(second) {
+    console.log(parseInt(video1.duration / 60, 10));
+    if (second) {
+
+        if (video2.currentTime > v2_end_time) {
+            video2.currentTime = v2_start_time;
+        }
+    } else {
+
+        if (video1.currentTime > v1_end_time) {
+            video1.currentTime = v1_start_time;
+        }
     }
 }
 
