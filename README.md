@@ -9,19 +9,19 @@ In the end, I completely abandonned Python, since JavaScript and HTML5 provide a
 
 Nevertheless, there follows an explanation of the old Python Code that is located in the Python Project folder now. The working version of the Code is inside of the WebGui folder.
 
-##Python Project:
+# Python Project:
 
 
-# WebCamRecorder.py
+## WebCamRecorder.py
 This programm starts a tiny Tkinter Gui in which you can click start to make your Webcam start recording you. You can click stop and an output.avi file of you sitting in front of your computer is generated in the same folder. It's only a small helper programm.
 
 
-# Video.py
+## Video.py
 This is the main program, it has a gui to open two video via file selector, to play them after hitting play and to load a video from a webcam inside the gui.
 
 
 
 
-## WebGui:
+# WebGui:
 
-#
+##
