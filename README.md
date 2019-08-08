@@ -24,4 +24,10 @@ This is the main program, it has a gui to open two video via file selector, to p
 
 # WebGui:
 
-##
+There are a gui and an engine folder. The engine folder contains the old python file, which is not relevant any more. Maybe it will be used in the future, but I don't think so.
+
+So, in the gui folder we have some js and json files, which are not to be touched. They belong to the electron Framework and were never changed after the download.
+
+The two files that we are working with are index.html and inside the linkers folder the video.js file.
+
+Straightforwardly the index.html file contains all the HTML5 and CSS elements while the video.js file contains the functionality with JavaScript and JQuery.

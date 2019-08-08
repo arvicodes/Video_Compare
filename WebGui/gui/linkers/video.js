@@ -170,6 +170,8 @@ function open_dialog() {
 
 
 
+// ---------- OLD CODE TO CALL A PYTHON FUNCTION --- NOT IN USE --------
+
 function get_video() {
 
     //this is the render process not the main process. In terminal when we start npm start, we only see logging from main process, this way here we can see the render logging too
