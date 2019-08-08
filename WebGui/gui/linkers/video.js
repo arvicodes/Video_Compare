@@ -12,13 +12,44 @@ function init() {
 
 }
 
+
+function open_file_dialogue() {
+
+    //use input type file to create the standard js file selector as the
+    //variable fileSelector, this basically creates a new html input fiels/tag
+    // <input type="file">
+    
+   /* var fileSelector = document.createElement('input');
+    fileSelector.setAttribute('type', 'file');
+    fileSelector.click();
+
+    const selectedFile = fileSelector.files[0].name;*/
+
+    //HAVE TO CLICK TWO TIMES AT THE MOMENT DON'T KNOW WHY
+    var loader = document.getElementById('file_loader_1');
+    if (loader) {
+        loader.click();
+    }
+    loader = document.getElementById('file_loader_1');
+
+    const selectedFile = loader.files[0].name;
+
+
+    console.log(selectedFile);
+    return selectedFile;
+
+}
+
+
 function get_video_js_only(second) {
 
     init();
 
+    var file = open_file_dialogue();
     var source = document.createElement('source');
 
-    source.setAttribute('src', 'a1QnG8Y_460svvp9.webm');
+    //source.setAttribute('src', 'a1QnG8Y_460svvp9.webm');
+    source.setAttribute('src', file);
 
     video = video1;
     if (second) {

@@ -30,4 +30,4 @@ So, in the gui folder we have some js and json files, which are not to be touche
 
 The two files that we are working with are index.html and inside the linkers folder the video.js file.
 
-Straightforwardly the index.html file contains all the HTML5 and CSS elements while the video.js file contains the functionality with JavaScript and JQuery.
+Straightforwardly the index.html file contains all the HTML5 and CSS elements while the video.js file contains the functionality with JavaScript and JQuery.cd 

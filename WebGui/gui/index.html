@@ -51,6 +51,9 @@
     <div class="row">
       <div id="left" class="col-xs-6">
 
+        <!-- Hidden input fild for file open dialogue -->
+       <input type="file" id="file_loader_1" accept="video/*" style="display:none" onchange="handleFiles(this.files)">
+
         <button type="button" class="btn btn-primary" id="video_one_load_button" onclick="get_video_js_only(0)">Load First Video</button>
 
         <video id="video1" controls class="cld-video-player cld-fluid" preload="auto"
