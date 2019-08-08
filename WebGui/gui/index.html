@@ -53,7 +53,8 @@
 
         <button type="button" class="btn btn-primary" id="video_one_load_button" onclick="get_video_js_only(0)">Load First Video</button>
 
-        <video id="video1" played loop controls  muted  class="cld-video-player cld-fluid" preload="metadata"></video>
+        <video id="video1" controls class="cld-video-player cld-fluid" preload="auto"
+        onloadstart="this.volume=0.5"></video>
 
 
         <br />
@@ -77,7 +78,7 @@
 
         <button type="button" class="btn btn-primary" id="video_two_load_button" onclick="get_video_js_only(1)">Load Second Video</button>
 
-        <video id="video2" played loop controls  muted  class="cld-video-player cld-fluid" preload="metadata"></video>
+        <video id="video2" controls class="cld-video-player cld-fluid" preload="auto" onloadstart="this.volume=0.5"></video>
 
         <br />
         <div class="input-group" style="width:25%;">

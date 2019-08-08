@@ -1,9 +1,14 @@
-var video1, video2, seekBar, v1_start_time, v2_start_time, v1_end_time, v2_end_time;
+var video1, video2, v1_start_time, v2_start_time, v1_end_time, v2_end_time;
 
 function init() {
 
     video1 = document.getElementById('video1');
     video2 = document.getElementById('video2');
+
+    v1_start_time = 0;
+    v2_start_time = 0;
+    v1_end_time = 10000;
+    v2_end_time = 10000;
 
 }
 
@@ -22,33 +27,28 @@ function get_video_js_only(second) {
 
 
     video.appendChild(source);
-    //video.play();
+    video.play();
 
     //add an update, as soon as the video is running loop is called constantly
     video.ontimeupdate = function() {loop(second)};
-    console.log(second);
-    setTimeout(function() {  
+    /*setTimeout(function() {  
         video.pause();
 
-        source.setAttribute('src', 'a1QnG8Y_460svvp9.webm#t=15,20'); 
+        source.setAttribute('src', 'a1QnG8Y_460svvp9.webm'); 
 
         video.load();
         video.play();
-    }, 10000);
-
+    }, 10000);*/
 
 
     //enable the input fields for start end end input of the loop after video is loaded now
     if (second) {
         document.getElementById('v2_start').disabled = false;
         document.getElementById('v2_end').disabled = false;
-        v2_end_time = video.duration;
     } else {
         document.getElementById('v1_start').disabled = false;
         document.getElementById('v1_end').disabled = false;
-        v1_end_time = video.duration;
     }
-
 
     video.controls.innerHTML =  '<button class="play">play</button>'+
                             '<div id="change">' +
@@ -84,9 +84,10 @@ function play_pause_both_videos(){
 
 
 function define_start(second) {
+
     if (second) {
-        var v2_start_input = document.getElementById('v2_start').value;
-        v2_start_time = v2_start_input;
+        v2_start_time = document.getElementById('v2_start').value;
+        v2_start_time = parseFloat(v2_start_time);
 
         //if user puts starttime that is lower than 0 or higher than endtime
         if (v2_start_time < 0 || v2_start_time >= v2_end_time) {
@@ -94,9 +95,8 @@ function define_start(second) {
             document.getElementById('v2_start').value = 0;
         }
     } else {
-
-        var v1_start_input = document.getElementById('v1_start').value;
-        v1_start_time = v1_start_input;
+        v1_start_time = document.getElementById('v1_start').value;
+        v1_start_time = parseFloat(v1_start_time);
 
         //if user puts starttime that is lower than 0 or higher than endtime
         if (v1_start_time < 0 || v1_start_time >= v1_end_time) {
@@ -107,9 +107,10 @@ function define_start(second) {
 }
 
 function define_end(second) {
+
     if (second) {
-        var v2_end_input = document.getElementById('v2_end').value;
-        v2_end_time = v2_end_input;
+        v2_end_time = document.getElementById('v2_end').value;
+        v2_end_time = parseFloat(v2_end_time);
 
         //if user puts endtime that is lower than the start time or higher than the duration
         if (v2_end_time <= v2_start_time || v2_end_time >= video2.duration) {
@@ -117,9 +118,8 @@ function define_end(second) {
             document.getElementById('v2_end').value = video2.duration;
         }
     } else {
-
-        var v1_end_input = document.getElementById('v1_end').value;
-        v1_end_time = v1_end_input;
+        v1_end_time = document.getElementById('v1_end').value;
+        v1_end_time = parseFloat(v1_end_time);
 
         //if user puts endtime that is lower than the start time or higher than the duration
         if (v1_end_time <= v1_start_time || v1_end_time >= video1.duration) {
@@ -133,15 +133,19 @@ function define_end(second) {
 function loop(second) {
     //console.log(parseInt(video1.duration / 60, 10));
     if (second) {
-
-        if (video2.currentTime > v2_end_time) {
+        //to begin the loop again, or if the loop hasn't started yet
+        if (video2.currentTime > v2_end_time || video2.currentTime < v2_start_time) {
             video2.currentTime = v2_start_time;
         }
     } else {
-
-        if (video1.currentTime > v1_end_time) {
+        //to begin the loop again, or if the loop hasn't started yet
+        if (video1.currentTime > v1_end_time || video1.currentTime < v1_start_time) {
             video1.currentTime = v1_start_time;
+
         }
+        //console.log(video1.duration);
+
+        //console.log(video1.currentTime);
     }
 }
 
