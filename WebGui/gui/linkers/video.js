@@ -12,50 +12,56 @@ function init() {
 
 }
 
-
-function open_file_dialogue() {
-
-    //use input type file to create the standard js file selector as the
-    //variable fileSelector, this basically creates a new html input fiels/tag
-    // <input type="file">
-    
-   /* var fileSelector = document.createElement('input');
-    fileSelector.setAttribute('type', 'file');
-    fileSelector.click();
-
-    const selectedFile = fileSelector.files[0].name;*/
-
-    //HAVE TO CLICK TWO TIMES AT THE MOMENT DON'T KNOW WHY
-    var loader = document.getElementById('file_loader_1');
-    if (loader) {
-        loader.click();
-    }
-    loader = document.getElementById('file_loader_1');
-
-    const selectedFile = loader.files[0].name;
-
-
-    console.log(selectedFile);
-    return selectedFile;
-
-}
-
-
-function get_video_js_only(second) {
+// Calles from the Open Video Button
+function open_file(second) {
 
     init();
 
-    var file = open_file_dialogue();
+    //get the hidden <input type="file"> file loader element and force a click on it
+    var loader = document.getElementById('file_loader_1');
+    if(second){
+        loader = document.getElementById('file_loader_2');
+    }
+    loader.click();
+
+    //Now, as soon as the user selects the file, handle_files is calles automatically and we can work with the selected file
+}
+
+//Autocall function when the user finished selecting the file in the open file dialogue
+function handle_files(file, second) {
+    const vid = file[0].name;
+    get_video(vid, second);
+}
+
+function use_webcam(second) {
+    //var video = document.createElement('video');
+    //video.setAttribute('type', video);
+
+    // Get access to the camera!
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Not adding `{ audio: true }` since we only want video now
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            //video.src = window.URL.createObjectURL(stream);
+            video.srcObject = stream;
+            video.play();
+        });
+    }  
+
+    enable_input_fields(second);
+}
+
+//This function is called from the auto handler after selecting the file, to now work with the selected file
+function get_video(vid, second) {
     var source = document.createElement('source');
 
     //source.setAttribute('src', 'a1QnG8Y_460svvp9.webm');
-    source.setAttribute('src', file);
+    source.setAttribute('src', vid);
 
+    //with cam stream only working if we use video here not with var video, but before this point video doesn't exist
     video = video1;
     if (second) {
         video = video2;
     }
-
 
     video.appendChild(source);
     video.play();
@@ -71,7 +77,10 @@ function get_video_js_only(second) {
         video.play();
     }, 10000);*/
 
+    enable_input_fields(second);
+}
 
+function enable_input_fields(second) {
     //enable the input fields for start end end input of the loop after video is loaded now
     if (second) {
         document.getElementById('v2_start').disabled = false;
@@ -81,7 +90,7 @@ function get_video_js_only(second) {
         document.getElementById('v1_end').disabled = false;
     }
 
-    video.controls.innerHTML =  '<button class="play">play</button>'+
+    /*video.controls.innerHTML =  '<button class="play">play</button>'+
                             '<div id="change">' +
                             '<button class="zoomin">+</button>' +
                             '<button class="zoomout">-</button>' +
@@ -92,11 +101,11 @@ function get_video_js_only(second) {
                             '<button class="rotateleft">&#x21bb;</button>' +
                             '<button class="rotateright">&#x21ba;</button>' +
                             '<button class="reset">reset</button>' +
-                          '</div>';
+                          '</div>';*/
     
-
-
 }
+
+
 
 
 
@@ -198,7 +207,7 @@ function open_dialog() {
 
 
 
-
+/*
 
 
 // ---------- OLD CODE TO CALL A PYTHON FUNCTION --- NOT IN USE --------
@@ -257,3 +266,4 @@ function get_video() {
     });
 
 }
+*/
