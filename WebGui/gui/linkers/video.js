@@ -1,4 +1,4 @@
-var video1, video2, v1_start_time, v2_start_time, v1_end_time, v2_end_time;
+var video1, video2, v1_start_time, v2_start_time, v1_end_time, v2_end_time, myStream;
 
 function init() {
 
@@ -34,17 +34,28 @@ function handle_files(file, second) {
 }
 
 function use_webcam(second) {
-    //var video = document.createElement('video');
-    //video.setAttribute('type', video);
 
-    // Get access to the camera!
+    init();
+
+    video = video1;
+    if(second) {
+        video = video2;
+    }
+
+    // Get access to the camera: if browser supports media divices then do ....
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        // Not adding `{ audio: true }` since we only want video now
-        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-            //video.src = window.URL.createObjectURL(stream);
-            video.srcObject = stream;
-            video.play();
-        });
+        // video:true is the only contraint we need, now the API returns a 
+        // Media Stream which we can set as the source of the video object
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                video.srcObject = stream;
+                myStream = stream;
+                video.play();
+            })
+
+            .catch(function(error){
+                console.log("Something went wrong.");
+            });
     }  
 
     enable_input_fields(second);
@@ -62,7 +73,7 @@ function get_video(vid, second) {
     if (second) {
         video = video2;
     }
-
+    video.srcObject = null;
     video.appendChild(source);
     video.play();
 
@@ -120,8 +131,36 @@ function play_pause_both_videos(){
         video2.pause();
         //document.getElementById("play_both").childNodes[0].nodeValue="Play Both Videos";
     }
+
+
+    //Now, let's also record the video from the web cam
+    startRecording();
 }
 
+
+
+function startRecording() {
+  recorder = new MediaRecorder(myStream, {
+    mimeType: 'video/webm'
+  });
+  recorder.start();
+}
+
+//NOT USED AS FOR NOW
+function stopRecording() {
+  recorder.ondataavailable = e => {
+    ul.style.display = 'block';
+    var a = document.createElement('a'),
+      li = document.createElement('li');
+    a.download = ['video_', (new Date() + '').slice(4, 28), '.webm'].join('');
+    a.href = URL.createObjectURL(e.data);
+    a.textContent = a.download;
+    li.appendChild(a);
+    ul.appendChild(li);
+  };
+  recorder.stop();
+  
+}
 
 function define_start(second) {
 

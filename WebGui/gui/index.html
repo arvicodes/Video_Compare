@@ -43,7 +43,7 @@
       <div id="left" class="col">
 
         <!-- Hidden input fild for file open dialogue -->
-        <input type="file" id="file_loader_1" accept="video/*" style="display:none" onchange="handle_files(this.files, 0)">
+        <input type="file" id="file_loader_1" accept="video/*" capture="environment" style="display:none" onchange="handle_files(this.files, 0)">
 
         <div class="btn-group">
           <button type="button" class="btn btn-primary" id="video_one_load_button" onclick="open_file(0)">Load First Video</button>
@@ -104,7 +104,7 @@
 
       <div class="col-12">
 
-        <button type="button" class="btn btn-primary" id="play_both" onclick="play_pause_both_videos(0)">Play/Pause both Videos</button>
+        <button type="button" class="btn btn-primary" id="play_both" onclick="play_pause_both_videos(0)">Play/Pause both Videos and/or Recorde</button>
 
       </div>
 
