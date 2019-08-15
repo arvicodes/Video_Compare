@@ -1,4 +1,6 @@
-var video1, video2, v1_start_time, v2_start_time, v1_end_time, v2_end_time, myStream;
+var recorder, video1, video2, v1_start_time, v2_start_time, v1_end_time, v2_end_time, stream_obj;
+var recordedChunks = [];
+
 
 function init() {
 
@@ -49,17 +51,28 @@ function use_webcam(second) {
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
                 video.srcObject = stream;
-                myStream = stream;
+                stream_obj = stream;
                 video.play();
+
+                //we need to attatch the stream_obj that we just got to a 
+                //MediaRecorder Object, so that we can use it to record the video later
+                recorder = new MediaRecorder(stream, {
+                     mimeType: 'video/webm; codecs=vp9'
+                });
+
+                recorder.ondataavailable = handleDataAvailable;
             })
 
             .catch(function(error){
                 console.log("Something went wrong.");
             });
-    }  
 
+    }  
     enable_input_fields(second);
 }
+
+
+
 
 //This function is called from the auto handler after selecting the file, to now work with the selected file
 function get_video(vid, second) {
@@ -132,35 +145,47 @@ function play_pause_both_videos(){
         //document.getElementById("play_both").childNodes[0].nodeValue="Play Both Videos";
     }
 
-
     //Now, let's also record the video from the web cam
-    startRecording();
+    record_videos();
 }
 
 
+function record_videos() {
 
-function startRecording() {
-  recorder = new MediaRecorder(myStream, {
-    mimeType: 'video/webm'
-  });
-  recorder.start();
+    //if recorder.state returns the string recording, the video is already being recorded
+    if (recorder.state.localeCompare("recording")) {
+        recorder.start();
+
+    } else {
+        recorder.stop();
+
+        //Now store the video locally
+        var blob = new Blob(recordedChunks, {
+            type: 'video/webm'
+        });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        document.body.appendChild(a);
+        a.style = 'display: none';
+        a.href = url;
+        a.download = 'test.webm';
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+    } 
 }
 
-//NOT USED AS FOR NOW
-function stopRecording() {
-  recorder.ondataavailable = e => {
-    ul.style.display = 'block';
-    var a = document.createElement('a'),
-      li = document.createElement('li');
-    a.download = ['video_', (new Date() + '').slice(4, 28), '.webm'].join('');
-    a.href = URL.createObjectURL(e.data);
-    a.textContent = a.download;
-    li.appendChild(a);
-    ul.appendChild(li);
-  };
-  recorder.stop();
-  
+function handleDataAvailable(event) {
+  if (event.data.size > 0) {
+    recordedChunks.push(event.data);
+
+    //console.log(recordedChunks[0]);
+  } else {
+    // ...
+  }
 }
+
+
 
 function define_start(second) {
 
