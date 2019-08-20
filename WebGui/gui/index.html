@@ -7,6 +7,9 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5.2.packed.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/sprinkle.js"></script>
 
 
 
@@ -55,13 +58,13 @@
         <video id="video1" controls class="cld-video-player cld-fluid" preload="auto"
         onloadstart="this.volume=0.5"></video>
 
-        <br />
+       <!-- <br />
         <div class="input-group" style="width:25%;">
             <input type="text" id="v1_start" class="form-control input-sm" onchange="define_start(0)" placeholder="Define Start" disabled>
         </div>    
         <div class="input-group" style="width:25%;">
             <input type="text" id="v1_end" class="form-control input-sm" onchange="define_end(0)" placeholder="Define End" disabled>
-        </div>
+        </div>-->
         
       </div>
 
@@ -86,6 +89,7 @@
         <video id="video2" controls class="cld-video-player cld-fluid" preload="auto" onloadstart="this.volume=0.5"></video>
 
         <br />
+        <div  id="box" style="border:1px; boder-color: white;">
         <div class="input-group" style="width:25%;">
             <input type="text" id="v2_start" class="form-control input-sm" onchange="define_start(1)" placeholder="Define Start" disabled>
         </div>    
@@ -104,7 +108,7 @@
 
       <div class="col-12">
 
-        <button type="button" class="btn btn-primary" id="play_both" onclick="play_pause_both_videos(0)">Play/Pause both Videos Start/Stop Recording</button>
+        <button type="button" class="btn btn-primary" id="play_both" onclick="play_pause_both_videos(0)">Start Recording & Play Loop</button>
 
       </div>
 

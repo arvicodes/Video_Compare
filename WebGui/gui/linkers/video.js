@@ -12,7 +12,13 @@ function init() {
     v1_end_time = 10000;
     v2_end_time = 10000;
 
+
 }
+
+function blink() {
+    $("#box").fadeTo(1, 0.1).fadeTo(2000, 1.0);
+}
+
 
 // Calles from the Open Video Button
 function open_file(second) {
@@ -33,6 +39,8 @@ function open_file(second) {
 function handle_files(file, second) {
     const vid = file[0].name;
     get_video(vid, second);
+
+    setInterval(function(){blink()}, 1);
 }
 
 function use_webcam(second) {
@@ -56,21 +64,41 @@ function use_webcam(second) {
 
                 //we need to attatch the stream_obj that we just got to a 
                 //MediaRecorder Object, so that we can use it to record the video later
-                recorder = new MediaRecorder(stream, {
-                     mimeType: 'video/webm; codecs=vp9'
-                });
+                var options;
+                if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+                    options = {mimeType: 'video/webm; codecs=vp9'};
+                } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
+                    options = {mimeType: 'video/webm; codecs=vp8'};
+                } else {
+                    // ...
+                }
+                recorder = new MediaRecorder(stream, options);
 
+                //here we are calling the handleDataAbailable function if data is available to do something with it
                 recorder.ondataavailable = handleDataAvailable;
+                recorder.start();
             })
 
             .catch(function(error){
-                console.log("Something went wrong.");
+                console.log("Something went wrong in use_webcam function.");
+                console.log(error);
             });
 
     }  
     enable_input_fields(second);
 }
 
+
+//calles by use_webcam if data is available to start doing something with the data
+function handleDataAvailable(event) {
+  if (event.data.size > 0) {
+    recordedChunks.push(event.data);
+
+    console.log(recordedChunks[0]);
+  } else {
+    // ...
+  }
+}
 
 
 
@@ -113,20 +141,6 @@ function enable_input_fields(second) {
         document.getElementById('v1_start').disabled = false;
         document.getElementById('v1_end').disabled = false;
     }
-
-    /*video.controls.innerHTML =  '<button class="play">play</button>'+
-                            '<div id="change">' +
-                            '<button class="zoomin">+</button>' +
-                            '<button class="zoomout">-</button>' +
-                            '<button class="left">⇠</button>' +
-                            '<button class="right">⇢</button>' +
-                            '<button class="up">⇡</button>' +
-                            '<button class="down">⇣</button>' +
-                            '<button class="rotateleft">&#x21bb;</button>' +
-                            '<button class="rotateright">&#x21ba;</button>' +
-                            '<button class="reset">reset</button>' +
-                          '</div>';*/
-    
 }
 
 
@@ -175,15 +189,7 @@ function record_videos() {
     } 
 }
 
-function handleDataAvailable(event) {
-  if (event.data.size > 0) {
-    recordedChunks.push(event.data);
 
-    //console.log(recordedChunks[0]);
-  } else {
-    // ...
-  }
-}
 
 
 
