@@ -30,7 +30,7 @@
         z-index: 1;
       }
 
-      #play_both {
+      #play_both, #record_and_play {
         width: 100%;
       }
 
@@ -49,9 +49,9 @@
         <input type="file" id="file_loader_1" accept="video/*" capture="environment" style="display:none" onchange="handle_files(this.files, 0)">
 
         <div class="btn-group">
-          <button type="button" class="btn btn-primary" id="video_one_load_button" onclick="open_file(0)">Load First Video</button>
+          <button type="button" class="btn btn-primary" id="video_one_load_button" onclick="open_file(0)" tabindex=5>Load First Video</button>
 
-          <button type="button" class="btn btn-primary" id="video_one_webcam" onclick="use_webcam(0)">Use Webcam</button>
+          <button type="button" class="btn btn-primary" id="video_one_webcam" onclick="use_webcam(0)" tabindex=1>Use Webcam</button>
         </div>
 
 
@@ -81,7 +81,7 @@
         <input type="file" id="file_loader_2" accept="video/*" style="display:none" onchange="handle_files(this.files, 1)">
 
         <div class="btn-group">
-          <button type="button" class="btn btn-primary" id="video_two_load_button" onclick="open_file(1)">Load Second Video</button>
+          <button type="button" class="btn btn-primary" id="video_two_load_button" onclick="open_file(1)" tabindex=2>Load Second Video</button>
 
           <button type="button" class="btn btn-primary" id="video_two_webcam" onclick="use_webcam(1)">Use Webcam</button>
         </div>
@@ -90,13 +90,15 @@
 
         <br />
         <div  id="box" style="border:1px; boder-color: white;">
-        <div class="input-group" style="width:25%;">
-            <input type="text" id="v2_start" class="form-control input-sm" onchange="define_start(1)" placeholder="Define Start" disabled>
-        </div>    
-        <div class="input-group" style="width:25%;">
-            <input type="text" id="v2_end" class="form-control input-sm" onchange="define_end(1)" placeholder="Define End" disabled>
+          <form id="form" ng-submit="submit()">
+            <div class="input-group" style="width:25%;">
+              <input type="text" id="v2_start" class="form-control input-sm" onchange="define_start(1)" placeholder="Define Start" disabled tabindex=3>
+            </div>    
+            <div class="input-group" style="width:25%;">
+              <input type="text" id="v2_end" class="form-control input-sm" onchange="define_end(1)" placeholder="Define End" disabled tabindex=4>
+            </div>
+          </form>
         </div>
-       
       </div>
 
     </div>
@@ -108,7 +110,11 @@
 
       <div class="col-12">
 
-        <button type="button" class="btn btn-primary" id="play_both" onclick="play_pause_both_videos(0)">Start Recording & Play Loop</button>
+        <button type="button" class="btn btn-primary" id="record_and_play" onclick="record_videos()" disabled tabindex=5>Start Recording & Play Video</button>
+
+        <br /><br />
+
+        <button type="button" class="btn btn-primary" id="play_both" onclick="play_both()" disabled tabindex=6>Play Both Videos</button>
 
       </div>
 

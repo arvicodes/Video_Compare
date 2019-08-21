@@ -1,6 +1,13 @@
 var recorder, video1, video2, v1_start_time, v2_start_time, v1_end_time, v2_end_time, stream_obj;
 var recordedChunks = [];
+var interval;
 
+//if the user puts some numbers into the form, the  button Play & record gets activated
+$("#form").on("input", function() {
+    document.getElementById('record_and_play').removeAttribute('disabled');
+
+    clearInterval(interval); 
+});
 
 function init() {
 
@@ -13,10 +20,6 @@ function init() {
     v2_end_time = 10000;
 
 
-}
-
-function blink() {
-    $("#box").fadeTo(1, 0.1).fadeTo(2000, 1.0);
 }
 
 
@@ -40,7 +43,19 @@ function handle_files(file, second) {
     const vid = file[0].name;
     get_video(vid, second);
 
-    setInterval(function(){blink()}, 1);
+    //let input form blink
+
+    interval = setInterval(blink, 500);
+}
+
+//make the start and end time input fields blink to indicate that we want the user to input something
+function blink() {
+    var box1 = document.getElementById('v2_start');
+    box1.style.borderColor =  (box1.style.borderColor == "white" ? "black" : "white");
+
+    var box2 = document.getElementById('v2_end');
+    box2.style.borderColor =  (box2.style.borderColor == "white" ? "black" : "white");
+
 }
 
 function use_webcam(second) {
@@ -69,14 +84,13 @@ function use_webcam(second) {
                     options = {mimeType: 'video/webm; codecs=vp9'};
                 } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
                     options = {mimeType: 'video/webm; codecs=vp8'};
-                } else {
-                    // ...
                 }
+
                 recorder = new MediaRecorder(stream, options);
 
                 //here we are calling the handleDataAbailable function if data is available to do something with it
                 recorder.ondataavailable = handleDataAvailable;
-                recorder.start();
+                //recorder.start();
             })
 
             .catch(function(error){
@@ -93,10 +107,6 @@ function use_webcam(second) {
 function handleDataAvailable(event) {
   if (event.data.size > 0) {
     recordedChunks.push(event.data);
-
-    console.log(recordedChunks[0]);
-  } else {
-    // ...
   }
 }
 
@@ -117,6 +127,7 @@ function get_video(vid, second) {
     video.srcObject = null;
     video.appendChild(source);
     video.play();
+    video.pause();
 
     //add an update, as soon as the video is running loop is called constantly
     video.ontimeupdate = function() {loop(second)};
@@ -137,39 +148,25 @@ function enable_input_fields(second) {
     if (second) {
         document.getElementById('v2_start').disabled = false;
         document.getElementById('v2_end').disabled = false;
-    } else {
+    } /*else {
         document.getElementById('v1_start').disabled = false;
         document.getElementById('v1_end').disabled = false;
-    }
+    }*/
 }
 
 
 
-
-
-function play_pause_both_videos(){
-    if (video1.paused || video2.paused) { 
-        video1.play();
-        video2.play();
-        //document.getElementById("play_both").childNodes[0].nodeValue="Pause Both Videos";
-    }
-    else {
-        video1.pause();
-        video2.pause();
-        //document.getElementById("play_both").childNodes[0].nodeValue="Play Both Videos";
-    }
-
-    //Now, let's also record the video from the web cam
-    record_videos();
-}
 
 
 function record_videos() {
 
+    video2.play();
+
     //if recorder.state returns the string recording, the video is already being recorded
     if (recorder.state.localeCompare("recording")) {
-        recorder.start();
-
+        //very important to set a imeSlice argument  in start, that specifies the length of media to capture for each Blob
+        recorder.start(3000);
+        document.getElementById("record_and_play").childNodes[0].nodeValue="Stop Recording & Video";
     } else {
         recorder.stop();
 
@@ -186,6 +183,14 @@ function record_videos() {
         a.click();
         window.URL.revokeObjectURL(url);
 
+        recordedChunks.length = 0;
+        blob = null;
+
+        document.getElementById("record_and_play").childNodes[0].nodeValue="Start Recording & Play Video";
+
+        video2.pause();
+
+        document.getElementById("play_both").removeAttribute('disabled');
     } 
 }
 
@@ -193,11 +198,29 @@ function record_videos() {
 
 
 
+function play_both(){
+    if (video1.paused || video2.paused) { 
+        video1.play();
+        video2.play();
+        document.getElementById("play_both").childNodes[0].nodeValue="Pause Both";
+    }
+    else {
+        video1.pause();
+        video2.pause();
+        document.getElementById("play_both").childNodes[0].nodeValue="Play Both";
+    }
+
+
+}
+
+
 function define_start(second) {
 
     if (second) {
         v2_start_time = document.getElementById('v2_start').value;
         v2_start_time = parseFloat(v2_start_time);
+        video2.play();
+        video2.pause();
 
         //if user puts starttime that is lower than 0 or higher than endtime
         if (v2_start_time < 0 || v2_start_time >= v2_end_time) {
