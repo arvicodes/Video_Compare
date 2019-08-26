@@ -2,6 +2,17 @@ var recorder, video1, video2, v1_start_time, v2_start_time, v1_end_time, v2_end_
 var recordedChunks = [];
 var interval;
 
+
+var width = screen.width / 2 - 10;
+var height = screen.height / 2 + 100;
+document.getElementById("video1").width = width;
+document.getElementById("video1").height = height;
+document.getElementById("video2").width = width;
+document.getElementById("video2").height = height;
+
+
+
+
 //if the user puts some numbers into the form, the  button Play & record gets activated
 $("#form").on("input", function() {
     document.getElementById('record_and_play').removeAttribute('disabled');

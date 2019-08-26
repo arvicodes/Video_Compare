@@ -19,19 +19,23 @@
         color:#CCCCCC; 
       }
      
-      div {
+      #left, #right, .input-group {
         float: left;
         border :1px solid #444444;
         padding:5px;
         margin: 5px;
         background:#3B3B3B;
       }
+
       .btn-group button {
         z-index: 1;
       }
 
       #play_both, #record_and_play {
         width: 100%;
+      }
+      #video1 {
+        float: left;
       }
 
     </style>
@@ -71,9 +75,6 @@
 
 
 
-
-
-
       <!-- RIGHT-->
       <div id="right" class="col">
 
@@ -89,13 +90,13 @@
         <video id="video2" controls class="cld-video-player cld-fluid" preload="auto" onloadstart="this.volume=0.5"></video>
 
         <br />
-        <div  id="box" style="border:1px; boder-color: white;">
+        <div id="box" style="border:1px; boder-color: white;">
           <form id="form" ng-submit="submit()">
             <div class="input-group" style="width:25%;">
-              <input type="text" id="v2_start" class="form-control input-sm" onchange="define_start(1)" placeholder="Define Start" disabled tabindex=3>
+              <input type="text" id="v2_start" class="form-control input-sm" onchange="define_start(1)" placeholder="Define Start (in Minutes)" disabled tabindex=3>
             </div>    
             <div class="input-group" style="width:25%;">
-              <input type="text" id="v2_end" class="form-control input-sm" onchange="define_end(1)" placeholder="Define End" disabled tabindex=4>
+              <input type="text" id="v2_end" class="form-control input-sm" onchange="define_end(1)" placeholder="Define End (in Minutes)" disabled tabindex=4>
             </div>
           </form>
         </div>
