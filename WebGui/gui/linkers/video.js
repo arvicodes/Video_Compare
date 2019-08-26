@@ -40,11 +40,11 @@ function open_file(second) {
 
 //Autocall function when the user finished selecting the file in the open file dialogue
 function handle_files(file, second) {
-    const vid = file[0].name;
+    var vid = file[0].name;
+    console.log(vid);
     get_video(vid, second);
 
     //let input form blink
-
     interval = setInterval(blink, 500);
 }
 
@@ -99,6 +99,7 @@ function use_webcam(second) {
             });
 
     }  
+    video.pause();
     enable_input_fields(second);
 }
 
@@ -112,22 +113,35 @@ function handleDataAvailable(event) {
 
 
 
-//This function is called from the auto handler after selecting the file, to now work with the selected file
+//This function is called from the auto handler handle_files after selecting the file, to now work with the selected file
 function get_video(vid, second) {
     var source = document.createElement('source');
 
-    //source.setAttribute('src', 'a1QnG8Y_460svvp9.webm');
+    //source.setAttribute('src', 'recording.webm');
     source.setAttribute('src', vid);
 
-    //with cam stream only working if we use video here not with var video, but before this point video doesn't exist
+    //with camera stream, only working if we use video here not with 'var video', but before this point video doesn't exist
     video = video1;
     if (second) {
         video = video2;
     }
     video.srcObject = null;
     video.appendChild(source);
+
+
     video.play();
-    video.pause();
+    //video.pause();
+   /* var playPromise = video.play();
+ 
+    if (playPromise !== undefined) {
+        playPromise.then(_ => {
+            video.pause();
+        })
+        .catch(error => {
+            console.log("Not save to pause video.");
+        });
+  }*/
+
 
     //add an update, as soon as the video is running loop is called constantly
     video.ontimeupdate = function() {loop(second)};
@@ -179,7 +193,7 @@ function record_videos() {
         document.body.appendChild(a);
         a.style = 'display: none';
         a.href = url;
-        a.download = 'test.webm';
+        a.download = 'recording.webm';
         a.click();
         window.URL.revokeObjectURL(url);
 
