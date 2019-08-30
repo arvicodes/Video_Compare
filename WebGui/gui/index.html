@@ -90,7 +90,7 @@
         <video id="video2" controls class="cld-video-player cld-fluid" preload="auto" onloadstart="this.volume=0.5"></video>
 
         <br />
-        <div id="box" style="border:1px; boder-color: white;">
+        <!--<div id="box" style="border:1px; boder-color: white;">
           <form id="form" ng-submit="submit()">
             <div class="input-group" style="width:25%;">
               <input type="text" id="v2_start" class="form-control input-sm" onchange="define_start(1)" placeholder="Define Start (in Minutes)" disabled tabindex=3>
@@ -99,7 +99,7 @@
               <input type="text" id="v2_end" class="form-control input-sm" onchange="define_end(1)" placeholder="Define End (in Minutes)" disabled tabindex=4>
             </div>
           </form>
-        </div>
+        </div>-->
       </div>
 
     </div>
@@ -111,11 +111,11 @@
 
       <div class="col-12">
 
-        <button type="button" class="btn btn-primary" id="record_and_play" onclick="record_videos()" disabled tabindex=5>Start Recording & Play Video</button>
+        <button type="button" class="btn btn-primary" id="record_and_play" onclick="record_videos()" tabindex=5>Start Recording & Play Video</button>
 
         <br /><br />
 
-        <button type="button" class="btn btn-primary" id="play_both" onclick="play_both()" disabled tabindex=6>Play Both Videos</button>
+        <button type="button" class="btn btn-primary" id="play_both" onclick="play_both()" tabindex=6>Play Both Videos</button>
 
       </div>
 

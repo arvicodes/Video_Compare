@@ -51,9 +51,10 @@ function open_file(second) {
 
 //Autocall function when the user finished selecting the file in the open file dialogue
 function handle_files(file, second) {
-    var vid = file[0].name;
-    console.log(vid);
-    get_video(vid, second);
+    //REALLY IMPORTANT to use .path here and not .name. We want the whole path for the video
+    //not just the name so we can open videos from every folder (absolute path)
+    var path = file[0].path;
+    get_video(path, second);
 
     //let input form blink
     interval = setInterval(blink, 500);
@@ -85,6 +86,7 @@ function use_webcam(second) {
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
                 video.srcObject = stream;
+                //video.setAttribute('src', stream);
                 stream_obj = stream;
                 video.play();
 
@@ -125,22 +127,24 @@ function handleDataAvailable(event) {
 
 
 //This function is called from the auto handler handle_files after selecting the file, to now work with the selected file
-function get_video(vid, second) {
-    var source = document.createElement('source');
-
-    //source.setAttribute('src', 'recording.webm');
-    source.setAttribute('src', vid);
-
+function get_video(path, second) {
     //with camera stream, only working if we use video here not with 'var video', but before this point video doesn't exist
     video = video1;
     if (second) {
         video = video2;
     }
+
+    //need to be careful here: in use_webcam() the src Object is set with video.srcObject = stream; not with video.setAttribute(). If we don't reset
+    //it to null it seems to override the attributes that are set with setAttribute.
     video.srcObject = null;
-    video.appendChild(source);
-
-
+    //first I created a seperate source object here, which is complete nonesense
+    //it's totally dufficient to add the path from the file picker <video src="path" ...>
+    video.setAttribute('src', path);
+    video.load();
     video.play();
+
+   
+
     //video.pause();
    /* var playPromise = video.play();
  
@@ -156,14 +160,6 @@ function get_video(vid, second) {
 
     //add an update, as soon as the video is running loop is called constantly
     video.ontimeupdate = function() {loop(second)};
-    /*setTimeout(function() {  
-        video.pause();
-
-        source.setAttribute('src', 'a1QnG8Y_460svvp9.webm'); 
-
-        video.load();
-        video.play();
-    }, 10000);*/
 
     enable_input_fields(second);
 }
@@ -240,6 +236,11 @@ function play_both(){
 
 
 function define_start(second) {
+
+    v2_start_time = 0;
+    v2_end_time = 0;
+    v1_start_time = 0;
+    v1_end_time = 0;
 
     if (second) {
         v2_start_time = document.getElementById('v2_start').value;

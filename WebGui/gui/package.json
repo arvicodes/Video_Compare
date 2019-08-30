@@ -1,20 +1,19 @@
 {
-  "name": "electron-quick-start",
+  "name": "VideoCompare",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "Comparing two videos on a high level",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/arvicodes/Video_Compare",
   "keywords": [
     "Electron",
-    "quick",
-    "start",
+    "compare",
     "tutorial",
-    "demo"
+    "video"
   ],
-  "author": "GitHub",
+  "author": "Arvicodes",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^6.0.0"
