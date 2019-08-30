@@ -14,11 +14,11 @@ document.getElementById("video2").height = height;
 
 
 //if the user puts some numbers into the form, the  button Play & record gets activated
-$("#form").on("input", function() {
+/*$("#form").on("input", function() {
     document.getElementById('record_and_play').removeAttribute('disabled');
 
     clearInterval(interval); 
-});
+});*/
 
 function init() {
 
@@ -57,18 +57,18 @@ function handle_files(file, second) {
     get_video(path, second);
 
     //let input form blink
-    interval = setInterval(blink, 500);
+    //interval = setInterval(blink, 500);
 }
 
 //make the start and end time input fields blink to indicate that we want the user to input something
-function blink() {
+/*function blink() {
     var box1 = document.getElementById('v2_start');
     box1.style.borderColor =  (box1.style.borderColor == "white" ? "black" : "white");
 
     var box2 = document.getElementById('v2_end');
     box2.style.borderColor =  (box2.style.borderColor == "white" ? "black" : "white");
 
-}
+}*/
 
 function use_webcam(second) {
 
@@ -166,10 +166,10 @@ function get_video(path, second) {
 
 function enable_input_fields(second) {
     //enable the input fields for start end end input of the loop after video is loaded now
-    if (second) {
+    /*if (second) {
         document.getElementById('v2_start').disabled = false;
         document.getElementById('v2_end').disabled = false;
-    } /*else {
+    } else {
         document.getElementById('v1_start').disabled = false;
         document.getElementById('v1_end').disabled = false;
     }*/
