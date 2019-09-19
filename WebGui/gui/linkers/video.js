@@ -74,6 +74,7 @@ function use_webcam(second) {
 
     init();
 
+
     video = video1;
     if(second) {
         video = video2;
