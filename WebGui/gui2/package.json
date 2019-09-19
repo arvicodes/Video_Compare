@@ -1,0 +1,24 @@
+{
+  "name": "VideoCompare",
+  "version": "1.0.0",
+  "description": "Comparing two videos on a high level",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/arvicodes/Video_Compare",
+  "keywords": [
+    "Electron",
+    "compare",
+    "tutorial",
+    "video"
+  ],
+  "author": "Arvicodes",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^6.0.0"
+  },
+  "dependencies": {
+    "consolelog": "^2.1.3"
+  }
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    <meta charset="UTF-8">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5.2.packed.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/sprinkle.js"></script>
+
+
+
+    <style>
+      body {
+        background: black;
+        color:#CCCCCC; 
+      }
+     
+      #left, #right, .input-group {
+        float: left;
+        border :1px solid #444444;
+        padding:5px;
+        margin: 5px;
+        background:#3B3B3B;
+      }
+
+      .btn-group button {
+        z-index: 1;
+      }
+
+      #play_both, #record_and_play {
+        width: 100%;
+      }
+      #video1 {
+        float: left;
+      }
+
+    </style>
+
+  </head>
+  <body>
+    
+
+
+    <!-- LEFT -->
+    <div class="row">
+      <div id="left" class="col">
+
+        <!-- Hidden input fild for file open dialogue -->
+        <input type="file" id="file_loader_1" accept="video/*" capture="environment" style="display:none" onchange="handle_files(this.files, 0)">
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary" id="video_one_load_button" onclick="open_file(0)" tabindex=5>Load First Video</button>
+
+          <button type="button" class="btn btn-primary" id="video_one_webcam" onclick="use_webcam(0)" tabindex=1>Use Webcam</button>
+        </div>
+
+
+        <video id="video1" controls class="cld-video-player cld-fluid" preload="auto"
+        onloadstart="this.volume=0.5"></video>
+
+       <!-- <br />
+        <div class="input-group" style="width:25%;">
+            <input type="text" id="v1_start" class="form-control input-sm" onchange="define_start(0)" placeholder="Define Start" disabled>
+        </div>    
+        <div class="input-group" style="width:25%;">
+            <input type="text" id="v1_end" class="form-control input-sm" onchange="define_end(0)" placeholder="Define End" disabled>
+        </div>-->
+        
+      </div>
+
+
+
+
+      <!-- RIGHT-->
+      <div id="right" class="col">
+
+        <!-- Hidden input fild for file open dialogue -->
+        <input type="file" id="file_loader_2" accept="video/*" style="display:none" onchange="handle_files(this.files, 1)">
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary" id="video_two_load_button" onclick="open_file(1)" tabindex=2>Load Second Video</button>
+
+          <button type="button" class="btn btn-primary" id="video_two_webcam" onclick="use_webcam(1)">Use Webcam</button>
+        </div>
+
+        <video id="video2" controls class="cld-video-player cld-fluid" preload="auto" onloadstart="this.volume=0.5"></video>
+
+        <br />
+        <!--<div id="box" style="border:1px; boder-color: white;">
+          <form id="form" ng-submit="submit()">
+            <div class="input-group" style="width:25%;">
+              <input type="text" id="v2_start" class="form-control input-sm" onchange="define_start(1)" placeholder="Define Start (in Minutes)" disabled tabindex=3>
+            </div>    
+            <div class="input-group" style="width:25%;">
+              <input type="text" id="v2_end" class="form-control input-sm" onchange="define_end(1)" placeholder="Define End (in Minutes)" disabled tabindex=4>
+            </div>
+          </form>
+        </div>-->
+      </div>
+
+    </div>
+
+
+
+
+
+
+      <div class="col-12">
+
+        <button type="button" class="btn btn-primary" id="record_and_play" onclick="record_videos()" tabindex=5>Start Recording & Play Video</button>
+
+        <br /><br />
+
+        <button type="button" class="btn btn-primary" id="play_both" onclick="play_both()" tabindex=6>Play Both Videos</button>
+
+      </div>
+
+
+
+
+
+    <!-- You can also require other files to run in this process -->
+    <!-- we need to include the scripts at the end of the html file, otherwise in js, the ids that are defined here will not be known to the js code -->
+    <script src="linkers/video.js"></script>
+    <script src="./renderer.js"></script>
+
+  </body>
+</html>
