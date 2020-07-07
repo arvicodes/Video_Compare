@@ -16,7 +16,7 @@
   "author": "Arvicodes",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^6.0.0"
+    "electron": "^7.2.4"
   },
   "dependencies": {
     "consolelog": "^2.1.3"
